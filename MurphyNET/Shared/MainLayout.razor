@@ -1,17 +1,32 @@
 ﻿@inherits LayoutComponentBase
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
 
     <div class="main">
-        <div class="top-row px-4">
-            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        <div class="top-row px-5">
+            <img class="logo" src="/css/logo.png" />
+            <h1>МЕРФИ В СЕТИ</h1>
+            <br>
+            <h2>ИГРОВАЯ ПЛАТФОРМА</h2>
         </div>
-
+        <div class="top-row px-4">
+            <a href="#Merch" target="_blank" class="nav-btn">Мерч</a>
+            <a href="#AboutUs" target="_blank" class="nav-btn">О нас</a>
+            <a href="#Contacts" target="_blank" class="nav-btn">Контакты</a>
+        </div>
         <div class="content px-4">
             @Body
+            <div class="btn-play-background">
+                <a href="#play">
+                    <img src="/css/btn-play-clickable.png" class="btn-play-clickable">
+                </a>
+            </div>
+            <a href="#play">
+            </a>
+
         </div>
     </div>
 </div>
