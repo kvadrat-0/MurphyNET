@@ -1,0 +1,209 @@
+﻿<!-- wwwroot/quiz.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Викторина Мерфи</title>
+    <link href="/css/app.css" rel="stylesheet">
+    <style>
+        /* Дополнительные стили для викторины */
+        .quiz-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+        }
+
+        .question-box {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #28276D;
+            border-radius: 10px;
+        }
+
+        .answer-row {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            gap: 10px;
+        }
+
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .quiz-controls {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .quiz-btn {
+            background: #28276D;
+            color: #FACECF;
+            padding: 15px 30px;
+            border-radius: 25px;
+            border: none;
+            font-family: 'InknutAntiqua', sans-serif;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 200px;
+            max-width: 300px;
+            word-wrap: break-word;
+            white-space: normal;
+            line-height: 1.4;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .quiz-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+            background: #3A3A8D;
+        }
+
+        .quiz-btn:active {
+            transform: translateY(0);
+        }
+
+        .quiz-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .quiz-btn:active::after {
+            width: 200px;
+            height: 200px;
+            opacity: 0.3;
+            transition: all 0.5s ease;
+        }
+
+        /* Стили для текста внутри кнопок */
+        .btn-text {
+            display: block;
+            max-height: 3.6em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="main">
+            <!-- Шапка как на главной -->
+            <div class="topchick">
+                <a href="/" style = "text-decoration: none;">
+                    <img class="logo" src="/css/media/logo.png">
+                </a>
+                <div class="homosexual">
+                    <img class="TitleMurphyVSeti" src="/css/media/title.png">  
+                </div>
+            </div>
+
+            <!-- Контейнер викторины -->
+            <div class="quiz-container">
+                <!-- Создание своей викторины -->
+                <div class="custom-quiz">
+                    <h2>Создайте свою викторину</h2>
+                    <div class="quiz-controls">
+                        <button onclick="addQuestion()" class="quiz-btn">
+                            <span class="btn-text">Добавить новый вопрос</span>
+                        </button>
+                        <button onclick="saveQuiz()" class="quiz-btn">
+                            <span class="btn-text">Сохранить викторину</span>
+                        </button>
+                        <button onclick="clearAll()" class="quiz-btn btn-danger">
+                            <span class="btn-text">Очистить всё</span>
+                        </button>
+                    </div>
+                    <div id="questions-container"></div>
+                </div>
+
+                <!-- Стандартная викторина -->
+                <div class="standard-quiz">
+                    <h2>Стандартная викторина</h2>
+                    <div id="premade-questions"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Логика работы с вопросами
+        let questionCount = 0;
+
+        function addQuestion() {
+            questionCount++;
+            const container = document.getElementById('questions-container');
+            
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-box';
+            questionDiv.innerHTML = `
+                <h3>Вопрос ${questionCount}</h3>
+                <input type="text" placeholder="Текст вопроса" class="question-input">
+                <div class="answers-container"></div>
+                <div class="controls">
+                    <button onclick="addAnswer(this)" class="nav-btn">Добавить ответ ➕</button>
+                    <button onclick="this.parentElement.parentElement.remove()" class="btn-danger">Удалить вопрос ❌</button>
+                </div>
+            `;
+            
+            container.appendChild(questionDiv);
+        }
+
+        function addAnswer(button) {
+            const answersContainer = button.parentElement.previousElementSibling;
+            const answerDiv = document.createElement('div');
+            answerDiv.className = 'answer-row';
+            answerDiv.innerHTML = `
+                <input type="text" placeholder="Вариант ответа">
+                <label>
+                    <input type="checkbox"> Правильный
+                </label>
+                <button onclick="this.parentElement.remove()" class="btn-danger">❌</button>
+            `;
+            answersContainer.appendChild(answerDiv);
+        }
+
+        function saveQuiz() {
+            // Здесь можно добавить логику сохранения
+            alert('Викторина сохранена!');
+        }
+
+        // Загрузка стандартных вопросов
+        window.onload = function() {
+            const premadeContainer = document.getElementById('premade-questions');
+            // Добавьте свои 15 вопросов
+            for(let i = 1; i <= 15; i++) {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-box';
+                questionDiv.innerHTML = `
+                    <h3>Вопрос ${i}</h3>
+                    <div class="answer-row">
+                        <input type="radio" name="q${i}">
+                        <label>Вариант 1</label>
+                    </div>
+                    <div class="answer-row">
+                        <input type="radio" name="q${i}">
+                        <label>Вариант 2</label>
+                    </div>
+                `;
+                premadeContainer.appendChild(questionDiv);
+            }
+        }
+    </script>
+</body>
+</html>
