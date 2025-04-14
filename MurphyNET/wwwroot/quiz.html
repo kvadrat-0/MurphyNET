@@ -6,7 +6,6 @@
     <title>Викторина по кибербезопасности | Мерфи</title>
     <link href="/css/app.css" rel="stylesheet">
     <style>
-        /* Основные стили */
         body {
             background-image: url('/css/media/background.png');
             background-size: cover;
@@ -63,7 +62,6 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
-        /* Стили вопросов */
         .question-box {
             margin: 30px 0;
             padding: 20px;
@@ -78,7 +76,6 @@
                 font-size: 1.4em;
             }
 
-        /* Стили ответов */
         .answers-grid {
             display: grid;
             gap: 15px;
@@ -227,7 +224,7 @@
 
                 <!-- Стандартная викторина -->
                 <div class="standard-quiz" style="margin-top: 50px;">
-                    <h2 style="text-align: center; color: #28276D;">Тест по кибербезопасности</h2>
+                    <h2 style="text-align: center; color: #28276D;">Викторина по кибербезопасности</h2>
                     <div id="premade-questions"></div>
                     <div class="quiz-controls">
                         <button onclick="showCorrectAnswers()" id="finish-btn" class="quiz-btn">
@@ -324,10 +321,8 @@
                 }
             ];
 
-        // Переменные для создания викторины
         let questionCount = 0;
 
-        // Генерация стандартной викторины
         function generateCyberQuiz() {
             const container = document.getElementById('premade-questions');
             container.innerHTML = '';
