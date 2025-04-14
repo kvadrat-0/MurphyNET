@@ -3,32 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Викторина Мерфи</title>
+    <title>Викторина по кибербезопасности | Мерфи</title>
     <link href="/css/app.css" rel="stylesheet">
     <style>
-        /* Стили */
-        .quiz-container {
-            max-width: 800px;
-            margin: 20px auto;
+        /* Основные стили */
+        body {
+            background-image: url('/css/media/background.png');
+            background-size: cover;
+            background-attachment: fixed;
+            font-family: 'InknutAntiqua', sans-serif;
+            color: #28276D;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main {
+            flex: 1;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
         }
 
-        .question-box {
-            margin: 20px 0;
-            padding: 15px;
-            border: 2px solid #28276D;
-            border-radius: 10px;
-        }
-
-        .answer-row {
+        /* Шапка */
+        .topchick {
             display: flex;
             align-items: center;
-            margin: 10px 0;
-            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            position: relative;
         }
 
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-right: 30px;
+            transition: transform 0.3s;
+        }
+
+            .logo:hover {
+                transform: scale(1.05);
+            }
+
+        .TitleMurphyVSeti {
+            max-width: 400px;
+            height: auto;
+        }
+
+        /* Контейнер викторины */
+        .quiz-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Стили вопросов */
+        .question-box {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #28276D;
+            border-radius: 15px;
+            background: white;
+        }
+
+            .question-box h3 {
+                margin-top: 0;
+                color: #28276D;
+                font-size: 1.4em;
+            }
+
+        /* Стили ответов */
+        .answers-grid {
+            display: grid;
+            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .answer-option {
+            position: relative;
+            padding: 12px 20px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+
+            .answer-option:hover {
+                background: #e9ecef;
+            }
+
+            .answer-option input[type="radio"] {
+                margin-right: 10px;
+            }
+
+        /* Правильные ответы */
+        .correct-tag {
+            color: #28a745;
+            font-size: 0.9em;
+            margin-left: 10px;
+            display: none;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Показ результатов */
+        .show-answers .correct-tag {
+            display: inline-block;
+        }
+
+        .selected-correct {
+            background: #e8f5e9;
+        }
+
+        .selected-wrong {
+            background: #ffebee;
+        }
+
+        /* Кнопки */
         .quiz-controls {
             display: flex;
             gap: 20px;
@@ -44,102 +142,97 @@
             border-radius: 25px;
             border: none;
             font-family: 'InknutAntiqua', sans-serif;
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             min-width: 200px;
-            max-width: 300px;
-            word-wrap: break-word;
-            white-space: normal;
-            line-height: 1.4;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
         }
 
             .quiz-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+                transform: translateY(-3px);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
                 background: #3A3A8D;
             }
 
-        .cyber-question {
-            background: #f8f9fa;
-            border-color: #28276D;
+            .quiz-btn:active {
+                transform: translateY(0);
+            }
+
+        .btn-danger {
+            background: #dc3545;
         }
 
-        .answers-grid {
-            display: grid;
-            gap: 15px;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            .btn-danger:hover {
+                background: #c82333;
+            }
+
+        /* Создание викторины */
+        .creator-controls {
+            margin-top: 30px;
         }
 
-        .correct-answer {
-            position: relative;
-            border-left: 4px solid #28a745;
-            padding-left: 10px;
+        .answer-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
         }
 
-        .correct-tag {
-            color: #28a745;
-            font-size: 0.9em;
-            margin-left: 10px;
-            display: none;
-        }
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .topchick {
+                flex-direction: column;
+                text-align: center;
+            }
 
-        .show-correct .correct-tag {
-            display: inline-block !important;
-        }
+            .logo {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
 
-        .show-correct .correct-answer {
-            background: #e8f5e9;
-            border-radius: 8px;
-            padding: 10px;
-        }
+            .quiz-container {
+                padding: 15px;
+            }
 
-        #finish-btn.completed {
-            background: #28a745;
-            cursor: not-allowed;
-        }
-
-        .input-field {
-            border: 2px solid #FACECF;
-            border-radius: 15px;
-            padding: 12px 20px;
-            width: 100%;
+            .answers-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="page">
         <div class="main">
+            <!-- Шапка -->
             <div class="topchick">
-                <a href="/" style="text-decoration: none;">
-                    <img class="logo" src="/css/media/logo.png">
+                <a href="/">
+                    <img class="logo" src="/css/media/logo.png" alt="Логотип Мерфи">
                 </a>
-                <div class="homosexual">
-                    <img class="TitleMurphyVSeti" src="/css/media/title.png">
-                </div>
+                <img class="TitleMurphyVSeti" src="/css/media/title.png" alt="Мерфи в сети">
             </div>
 
+            <!-- Основной контент -->
             <div class="quiz-container">
-                <!-- Пользовательская викторина -->
+                <!-- Создание викторины -->
                 <div class="custom-quiz">
-                    <h2>Создайте свою викторину</h2>
+                    <h2 style="text-align: center; color: #28276D;">Создайте свою викторину</h2>
                     <div class="quiz-controls">
                         <button onclick="addQuestion()" class="quiz-btn">Добавить вопрос</button>
-                        <button onclick="saveQuiz()" class="quiz-btn">Сохранить</button>
+                        <button onclick="saveQuiz()" class="quiz-btn">Сохранить викторину</button>
                         <button onclick="clearAll()" class="quiz-btn btn-danger">Очистить всё</button>
                     </div>
                     <div id="questions-container"></div>
                 </div>
 
                 <!-- Стандартная викторина -->
-                <div class="standard-quiz">
-                    <h2>Кибербезопасность - Тест</h2>
+                <div class="standard-quiz" style="margin-top: 50px;">
+                    <h2 style="text-align: center; color: #28276D;">Тест по кибербезопасности</h2>
                     <div id="premade-questions"></div>
                     <div class="quiz-controls">
-                        <button onclick="showCorrectAnswers()" id="finish-btn" class="quiz-btn">Завершить тест</button>
+                        <button onclick="showCorrectAnswers()" id="finish-btn" class="quiz-btn">
+                            Завершить тест и показать результаты
+                        </button>
                     </div>
                 </div>
             </div>
@@ -147,53 +240,7 @@
     </div>
 
     <script>
-        let questionCount = 0;
-
-        // Функции для пользовательской викторины
-        function addQuestion() {
-            questionCount++;
-            const container = document.getElementById('questions-container');
-
-            const questionDiv = document.createElement('div');
-            questionDiv.className = 'question-box';
-            questionDiv.innerHTML = `
-                    <h3>Вопрос ${questionCount}</h3>
-                    <input type="text"
-                           placeholder="Текст вопроса"
-                           class="input-field">
-                    <div class="answers-container"></div>
-                    <div class="quiz-controls">
-                        <button onclick="addAnswer(this)" class="quiz-btn">Добавить ответ</button>
-                        <button onclick="this.parentElement.parentElement.remove()"
-                                class="quiz-btn btn-danger">Удалить</button>
-                    </div>
-                `;
-            container.appendChild(questionDiv);
-        }
-
-        function addAnswer(button) {
-            const answersContainer = button.parentElement.previousElementSibling;
-            const answerDiv = document.createElement('div');
-            answerDiv.className = 'answer-row';
-            answerDiv.innerHTML = `
-                    <input type="text" placeholder="Вариант ответа" class="input-field">
-                    <label>
-                        <input type="checkbox"> Правильный
-                    </label>
-                    <button onclick="this.parentElement.remove()" class="btn-danger">❌</button>
-                `;
-            answersContainer.appendChild(answerDiv);
-        }
-
-        function clearAll() {
-            if (confirm('Удалить все вопросы?')) {
-                document.getElementById('questions-container').innerHTML = '';
-                questionCount = 0;
-            }
-        }
-
-        // Стандартная викторина
-        function generateCyberQuiz() {
+        // Вопросы для викторины
             const cyberQuestions = [
                 {
                     question: "Что такое фишинг?",
@@ -277,23 +324,27 @@
                 }
             ];
 
+        // Переменные для создания викторины
+        let questionCount = 0;
+
+        // Генерация стандартной викторины
+        function generateCyberQuiz() {
             const container = document.getElementById('premade-questions');
             container.innerHTML = '';
 
             cyberQuestions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
-                questionDiv.className = 'question-box cyber-question';
+                questionDiv.className = 'question-box';
                 questionDiv.innerHTML = `
                         <h3>Вопрос ${index + 1}: ${q.question}</h3>
                         <div class="answers-grid">
                             ${q.answers.map((a, i) => `
-                                <div class="answer-option ${a.correct ? 'correct-answer' : ''}">
+                                <div class="answer-option">
                                     <input type="radio"
                                            name="q${index}"
                                            id="q${index}_a${i}"
                                            ${a.correct ? 'data-correct="true"' : ''}>
                                     <label for="q${index}_a${i}">${a.text}</label>
-                                    <span class="correct-tag">✓ Правильный</span>
                                 </div>
                             `).join('')}
                         </div>
@@ -302,49 +353,144 @@
             });
         }
 
+        // Показать правильные ответы
         function showCorrectAnswers() {
-            if (!confirm("Завершить тест и показать ответы?")) return;
+            if (!confirm("Вы уверены, что хотите завершить тест и посмотреть результаты?")) {
+                return;
+            }
 
             const quizContainer = document.getElementById('premade-questions');
             const finishBtn = document.getElementById('finish-btn');
 
-            quizContainer.classList.add('show-correct');
-            finishBtn.textContent = "Ответы показаны ✓";
-            finishBtn.disabled = true;
+            // Показываем правильные ответы
+            quizContainer.classList.add('show-answers');
 
             // Подсчет результатов
             let score = 0;
-            document.querySelectorAll('input[type="radio"]:checked').forEach(input => {
-                if (input.dataset.correct === "true") score++;
+            const totalQuestions = cyberQuestions.length;
+
+            document.querySelectorAll('#premade-questions .question-box').forEach((question, index) => {
+                const selected = question.querySelector('input[type="radio"]:checked');
+                const correct = question.querySelector('input[data-correct="true"]');
+
+                if (selected) {
+                    if (selected.dataset.correct === "true") {
+                        selected.parentElement.classList.add('selected-correct');
+                        score++;
+                    } else {
+                        selected.parentElement.classList.add('selected-wrong');
+                        correct.parentElement.classList.add('selected-correct');
+                    }
+                } else {
+                    // Если ответ не выбран, показываем правильный
+                    correct.parentElement.classList.add('selected-correct');
+                }
             });
-            alert(`Результат: ${score}/10 правильных ответов`);
+
+            // Обновляем кнопку
+            finishBtn.textContent = `Результат: ${score}/${totalQuestions}`;
+            finishBtn.disabled = true;
+            finishBtn.style.backgroundColor = score >= totalQuestions / 2 ? '#28a745' : '#dc3545';
+
+            // Показываем результат
+            alert(`Тест завершен!\nПравильных ответов: ${score} из ${totalQuestions}\n${getResultMessage(score, totalQuestions)}`);
         }
 
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', generateCyberQuiz);
+        // Сообщение с результатом
+        function getResultMessage(score, total) {
+            const percentage = (score / total) * 100;
 
-        // Сохранение викторины
+            if (percentage >= 90) return "Отличный результат! Вы настоящий эксперт в кибербезопасности!";
+            if (percentage >= 70) return "Хороший результат! Вы хорошо разбираетесь в теме.";
+            if (percentage >= 50) return "Неплохо, но есть куда расти! Рекомендуем изучить материалы по кибербезопасности.";
+            return "Вам стоит серьезнее отнестись к вопросам кибербезопасности. Рекомендуем пройти обучение.";
+        }
+
+        // Функции для создания викторины
+        function addQuestion() {
+            questionCount++;
+            const container = document.getElementById('questions-container');
+
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-box';
+            questionDiv.innerHTML = `
+                    <h3>Вопрос ${questionCount}</h3>
+                    <input type="text"
+                           placeholder="Введите текст вопроса"
+                           class="input-field"
+                           style="width: 100%; margin-bottom: 15px;">
+                    <div class="answers-container" id="answers-${questionCount}"></div>
+                    <div class="creator-controls">
+                        <button onclick="addAnswer(${questionCount})" class="quiz-btn">Добавить ответ</button>
+                        <button onclick="this.parentElement.parentElement.remove()"
+                                class="quiz-btn btn-danger">Удалить вопрос</button>
+                    </div>
+                `;
+            container.appendChild(questionDiv);
+        }
+
+        function addAnswer(questionId) {
+            const answersContainer = document.getElementById(`answers-${questionId}`);
+            const answerCount = answersContainer.children.length + 1;
+
+            const answerDiv = document.createElement('div');
+            answerDiv.className = 'answer-row';
+            answerDiv.innerHTML = `
+                    <input type="text"
+                           placeholder="Вариант ответа ${answerCount}"
+                           class="input-field">
+                    <label>
+                        <input type="checkbox" class="correct-checkbox"> Правильный
+                    </label>
+                    <button onclick="this.parentElement.remove()"
+                            class="quiz-btn btn-danger"
+                            style="padding: 5px 10px;">Удалить</button>
+                `;
+            answersContainer.appendChild(answerDiv);
+        }
+
+        function clearAll() {
+            if (confirm('Вы уверены, что хотите удалить все вопросы?')) {
+                document.getElementById('questions-container').innerHTML = '';
+                questionCount = 0;
+            }
+        }
+
         function saveQuiz() {
             const questions = [];
-            document.querySelectorAll('.question-box').forEach(question => {
-                const q = {
-                    text: question.querySelector('input').value,
-                    answers: []
-                };
+            const questionElements = document.querySelectorAll('#questions-container .question-box');
+
+            questionElements.forEach(question => {
+                const questionText = question.querySelector('input[type="text"]').value;
+                const answers = [];
 
                 question.querySelectorAll('.answer-row').forEach(answer => {
-                    q.answers.push({
+                    answers.push({
                         text: answer.querySelector('input[type="text"]').value,
-                        correct: answer.querySelector('input[type="checkbox"]').checked
+                        correct: answer.querySelector('.correct-checkbox').checked
                     });
                 });
 
-                questions.push(q);
+                questions.push({
+                    question: questionText,
+                    answers: answers
+                });
             });
 
             localStorage.setItem('customQuiz', JSON.stringify(questions));
-            alert('Викторина сохранена!');
+            alert('Ваша викторина успешно сохранена!');
         }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function () {
+            generateCyberQuiz();
+
+            // Загрузка сохраненной викторины
+            const savedQuiz = localStorage.getItem('customQuiz');
+            if (savedQuiz) {
+                // Можно добавить функционал загрузки
+            }
+        });
     </script>
 </body>
 </html>
