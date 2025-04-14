@@ -1,5 +1,4 @@
-﻿<!-- wwwroot/quiz.html -->
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +6,7 @@
     <title>Викторина Мерфи</title>
     <link href="/css/app.css" rel="stylesheet">
     <style>
-        /* Дополнительные стили для викторины */
+        /* Стили */
         .quiz-container {
             max-width: 800px;
             margin: 20px auto;
@@ -30,10 +29,6 @@
             gap: 10px;
         }
 
-        .controls {
-            text-align: center;
-            margin: 20px 0;
-        }
         .quiz-controls {
             display: flex;
             gap: 20px;
@@ -61,106 +56,118 @@
             position: relative;
             overflow: hidden;
         }
-        .quiz-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
-            background: #3A3A8D;
+
+            .quiz-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+                background: #3A3A8D;
+            }
+
+        .cyber-question {
+            background: #f8f9fa;
+            border-color: #28276D;
         }
 
-        .quiz-btn:active {
-            transform: translateY(0);
+        .answers-grid {
+            display: grid;
+            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         }
 
-        .quiz-btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
+        .correct-answer {
+            position: relative;
+            border-left: 4px solid #28a745;
+            padding-left: 10px;
         }
 
-        .quiz-btn:active::after {
-            width: 200px;
-            height: 200px;
-            opacity: 0.3;
-            transition: all 0.5s ease;
+        .correct-tag {
+            color: #28a745;
+            font-size: 0.9em;
+            margin-left: 10px;
+            display: none;
         }
 
-        /* Стили для текста внутри кнопок */
-        .btn-text {
-            display: block;
-            max-height: 3.6em;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .show-correct .correct-tag {
+            display: inline-block !important;
+        }
+
+        .show-correct .correct-answer {
+            background: #e8f5e9;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        #finish-btn.completed {
+            background: #28a745;
+            cursor: not-allowed;
+        }
+
+        .input-field {
+            border: 2px solid #FACECF;
+            border-radius: 15px;
+            padding: 12px 20px;
+            width: 100%;
         }
     </style>
 </head>
 <body>
     <div class="page">
         <div class="main">
-            <!-- Шапка как на главной -->
             <div class="topchick">
-                <a href="/" style = "text-decoration: none;">
+                <a href="/" style="text-decoration: none;">
                     <img class="logo" src="/css/media/logo.png">
                 </a>
                 <div class="homosexual">
-                    <img class="TitleMurphyVSeti" src="/css/media/title.png">  
+                    <img class="TitleMurphyVSeti" src="/css/media/title.png">
                 </div>
             </div>
 
-            <!-- Контейнер викторины -->
             <div class="quiz-container">
-                <!-- Создание своей викторины -->
+                <!-- Пользовательская викторина -->
                 <div class="custom-quiz">
                     <h2>Создайте свою викторину</h2>
                     <div class="quiz-controls">
-                        <button onclick="addQuestion()" class="quiz-btn">
-                            <span class="btn-text">Добавить новый вопрос</span>
-                        </button>
-                        <button onclick="saveQuiz()" class="quiz-btn">
-                            <span class="btn-text">Сохранить викторину</span>
-                        </button>
-                        <button onclick="clearAll()" class="quiz-btn btn-danger">
-                            <span class="btn-text">Очистить всё</span>
-                        </button>
+                        <button onclick="addQuestion()" class="quiz-btn">Добавить вопрос</button>
+                        <button onclick="saveQuiz()" class="quiz-btn">Сохранить</button>
+                        <button onclick="clearAll()" class="quiz-btn btn-danger">Очистить всё</button>
                     </div>
                     <div id="questions-container"></div>
                 </div>
 
                 <!-- Стандартная викторина -->
                 <div class="standard-quiz">
-                    <h2>Стандартная викторина</h2>
+                    <h2>Кибербезопасность - Тест</h2>
                     <div id="premade-questions"></div>
+                    <div class="quiz-controls">
+                        <button onclick="showCorrectAnswers()" id="finish-btn" class="quiz-btn">Завершить тест</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Логика работы с вопросами
         let questionCount = 0;
 
+        // Функции для пользовательской викторины
         function addQuestion() {
             questionCount++;
             const container = document.getElementById('questions-container');
-            
+
             const questionDiv = document.createElement('div');
             questionDiv.className = 'question-box';
             questionDiv.innerHTML = `
-                <h3>Вопрос ${questionCount}</h3>
-                <input type="text" placeholder="Текст вопроса" class="question-input">
-                <div class="answers-container"></div>
-                <div class="controls">
-                    <button onclick="addAnswer(this)" class="nav-btn">Добавить ответ ➕</button>
-                    <button onclick="this.parentElement.parentElement.remove()" class="btn-danger">Удалить вопрос ❌</button>
-                </div>
-            `;
-            
+                    <h3>Вопрос ${questionCount}</h3>
+                    <input type="text"
+                           placeholder="Текст вопроса"
+                           class="input-field">
+                    <div class="answers-container"></div>
+                    <div class="quiz-controls">
+                        <button onclick="addAnswer(this)" class="quiz-btn">Добавить ответ</button>
+                        <button onclick="this.parentElement.parentElement.remove()"
+                                class="quiz-btn btn-danger">Удалить</button>
+                    </div>
+                `;
             container.appendChild(questionDiv);
         }
 
@@ -169,40 +176,174 @@
             const answerDiv = document.createElement('div');
             answerDiv.className = 'answer-row';
             answerDiv.innerHTML = `
-                <input type="text" placeholder="Вариант ответа">
-                <label>
-                    <input type="checkbox"> Правильный
-                </label>
-                <button onclick="this.parentElement.remove()" class="btn-danger">❌</button>
-            `;
+                    <input type="text" placeholder="Вариант ответа" class="input-field">
+                    <label>
+                        <input type="checkbox"> Правильный
+                    </label>
+                    <button onclick="this.parentElement.remove()" class="btn-danger">❌</button>
+                `;
             answersContainer.appendChild(answerDiv);
         }
 
-        function saveQuiz() {
-            // Здесь можно добавить логику сохранения
-            alert('Викторина сохранена!');
+        function clearAll() {
+            if (confirm('Удалить все вопросы?')) {
+                document.getElementById('questions-container').innerHTML = '';
+                questionCount = 0;
+            }
         }
 
-        // Загрузка стандартных вопросов
-        window.onload = function() {
-            const premadeContainer = document.getElementById('premade-questions');
-            // Добавьте свои 15 вопросов
-            for(let i = 1; i <= 15; i++) {
+        // Стандартная викторина
+        function generateCyberQuiz() {
+            const cyberQuestions = [
+                {
+                    question: "Что такое фишинг?",
+                    answers: [
+                        { text: "Вид спортивной рыбалки", correct: false },
+                        { text: "Кибератака через поддельные emails", correct: true },
+                        { text: "Тип шифрования данных", correct: false }
+                    ]
+                },
+                {
+                    question: "Что означает аббревиатура 2FA?",
+                    answers: [
+                        { text: "Двухфакторная аутентификация", correct: true },
+                        { text: "2-фазная атака", correct: false },
+                        { text: "2-уровневое форматирование", correct: false }
+                    ]
+                },
+                {
+                    question: "Что должен содержать надежный пароль?",
+                    answers: [
+                        { text: "Имя домашнего питомца", correct: false },
+                        { text: "Комбинацию букв, цифр и символов", correct: true },
+                        { text: "Дату рождения", correct: false }
+                    ]
+                },
+                {
+                    question: "Для чего используется VPN?",
+                    answers: [
+                        { text: "Ускорения интернета", correct: false },
+                        { text: "Шифрования интернет-соединения", correct: true },
+                        { text: "Создания виртуальных машин", correct: false }
+                    ]
+                },
+                {
+                    question: "Что проверяет penetration test?",
+                    answers: [
+                        { text: "Уровень чернил в принтере", correct: false },
+                        { text: "Безопасность компьютерных систем", correct: true },
+                        { text: "Скорость сети", correct: false }
+                    ]
+                },
+                {
+                    question: "Что такое ransomware?",
+                    answers: [
+                        { text: "Программа-вымогатель", correct: true },
+                        { text: "Система управления базами данных", correct: false },
+                        { text: "Тип антивируса", correct: false }
+                    ]
+                },
+                {
+                    question: "Как часто нужно обновлять ПО?",
+                    answers: [
+                        { text: "Только при поломке", correct: false },
+                        { text: "По мере выхода обновлений", correct: true },
+                        { text: "Раз в 5 лет", correct: false }
+                    ]
+                },
+                {
+                    question: "Что защищает брандмауэр?",
+                    answers: [
+                        { text: "От несанкционированного доступа", correct: true },
+                        { text: "От физических повреждений", correct: false },
+                        { text: "От перегрева процессора", correct: false }
+                    ]
+                },
+                {
+                    question: "Что такое социальная инженерия?",
+                    answers: [
+                        { text: "Строительство соцобъектов", correct: false },
+                        { text: "Манипулирование людьми", correct: true },
+                        { text: "Новый язык программирования", correct: false }
+                    ]
+                },
+                {
+                    question: "Для чего нужен HTTPS?",
+                    answers: [
+                        { text: "Для безопасного соединения", correct: true },
+                        { text: "Для ускорения сайта", correct: false },
+                        { text: "Для хостинга видео", correct: false }
+                    ]
+                }
+            ];
+
+            const container = document.getElementById('premade-questions');
+            container.innerHTML = '';
+
+            cyberQuestions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
-                questionDiv.className = 'question-box';
+                questionDiv.className = 'question-box cyber-question';
                 questionDiv.innerHTML = `
-                    <h3>Вопрос ${i}</h3>
-                    <div class="answer-row">
-                        <input type="radio" name="q${i}">
-                        <label>Вариант 1</label>
-                    </div>
-                    <div class="answer-row">
-                        <input type="radio" name="q${i}">
-                        <label>Вариант 2</label>
-                    </div>
-                `;
-                premadeContainer.appendChild(questionDiv);
-            }
+                        <h3>Вопрос ${index + 1}: ${q.question}</h3>
+                        <div class="answers-grid">
+                            ${q.answers.map((a, i) => `
+                                <div class="answer-option ${a.correct ? 'correct-answer' : ''}">
+                                    <input type="radio"
+                                           name="q${index}"
+                                           id="q${index}_a${i}"
+                                           ${a.correct ? 'data-correct="true"' : ''}>
+                                    <label for="q${index}_a${i}">${a.text}</label>
+                                    <span class="correct-tag">✓ Правильный</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function showCorrectAnswers() {
+            if (!confirm("Завершить тест и показать ответы?")) return;
+
+            const quizContainer = document.getElementById('premade-questions');
+            const finishBtn = document.getElementById('finish-btn');
+
+            quizContainer.classList.add('show-correct');
+            finishBtn.textContent = "Ответы показаны ✓";
+            finishBtn.disabled = true;
+
+            // Подсчет результатов
+            let score = 0;
+            document.querySelectorAll('input[type="radio"]:checked').forEach(input => {
+                if (input.dataset.correct === "true") score++;
+            });
+            alert(`Результат: ${score}/10 правильных ответов`);
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', generateCyberQuiz);
+
+        // Сохранение викторины
+        function saveQuiz() {
+            const questions = [];
+            document.querySelectorAll('.question-box').forEach(question => {
+                const q = {
+                    text: question.querySelector('input').value,
+                    answers: []
+                };
+
+                question.querySelectorAll('.answer-row').forEach(answer => {
+                    q.answers.push({
+                        text: answer.querySelector('input[type="text"]').value,
+                        correct: answer.querySelector('input[type="checkbox"]').checked
+                    });
+                });
+
+                questions.push(q);
+            });
+
+            localStorage.setItem('customQuiz', JSON.stringify(questions));
+            alert('Викторина сохранена!');
         }
     </script>
 </body>
