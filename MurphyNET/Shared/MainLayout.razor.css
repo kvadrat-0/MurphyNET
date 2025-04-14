@@ -4,6 +4,48 @@
     flex-direction: column;
 }
 
+a {
+    text-decoration: none;
+    color: #28276D;
+}
+
+.bottomtitle {
+    width: 32.5694444444vw;
+    aspect-ratio: 8103 / 512;
+    position: absolute;
+    top: 60.5%;
+    left: 12%;
+}
+
+.TitleMurphyVSeti {
+    top: 3%;
+    left: 11.5%;
+    position: absolute;
+    width: 48.194444444vw;
+    aspect-ratio: 694.09 / 68.26;
+}
+
+.navigator {
+    margin-inline: 33px;
+    position: absolute;
+    top: 100.75%;
+}
+
+body {
+    background-image: url('media/background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+
+.topchick {
+    font-family: 'InknutAntiqua', sans-serif;
+    font-weight: 800;
+    color: white;
+    display: inline-block;
+}
+
 .main {
     flex: 1;
 }
@@ -13,8 +55,8 @@ a:hover, a:active {
 }
 
 .logo {
-    width: 133px;
-    height: 149px;
+    width: 9.23611111111vw;
+    aspect-ratio: 133 / 149;
 }
 
 
@@ -30,33 +72,55 @@ a:hover, a:active {
 }
 
 @font-face {
-    font-family: InknutAntiqua;
-    src: url("/css/InknutAntiqua.ttf") format('truetype');
+    font-family: 'InknutAntiqua';
+    src: url('fonts/InknutAntiqua.ttf') format('truetype');
 }
 
 .nav-btn {
     background-color: #FACECF;
+    color: #28276D;
     width: 241px;
     height: 89px;
     border-radius: 34px;
-    font-family: 'InknutAntiqua';
-    text-align: center;
+    border: none;
+    font-family: 'InknutAntiqua', sans-serif;
+    font-weight: 800;
+    line-height: 50%;
     font-size: 40px;
+    text-align: center;
+    margin-left: 33px;
+    margin-right: 33px;
+}
+
+.centrim {
+    display: inline-block;
+}
+
+.aquarium {
+    position: absolute;
+    top: 5%;
+    right: 0;
+    width: 41.25vw;
+    aspect-ratio: 594 / 921;
 }
 
 .btn-play-background {
-    background-image: url("/css/btn-background.png");
-    width: 652px;
-    height: 608px;
+    background-image: image('/wwwroot/css/media/btn_background.png');
+    width: 45vw;
+    position: absolute;
+    left: 9.68%;
+    margin-top: 10px;
+    aspect-ratio: 550 / 512;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    justify-content: center;
 }
 
 .btn-play-clickable {
-    width: 209px;
-    height: 209px;
+    width: 22.5138888889vw;
+    aspect-ratio: 1.1/1;
+    margin-top: 32%;
+    margin-left: 24.1%;
 }
 
 .top-row ::deep a, .top-row .btn-link {
